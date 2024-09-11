@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 def on_drag_start(event):
     widget = event.widget
     widget.start_index = widget.nearest(event.y)
@@ -117,10 +118,6 @@ apply_style()
 
 frame: ttk = ttk.Frame(root)
 frame.pack(fill=tk.BOTH, expand=True)
-
-
-
-
 
 # Добавление виджетов
 active_label: ttk = ttk.Label(frame, text='Активные задачи')
