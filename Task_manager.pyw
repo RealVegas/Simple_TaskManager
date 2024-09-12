@@ -74,7 +74,7 @@ def apply_style():
 
 root: tk = tk.Tk()
 root.geometry('960x355')
-root.title('Отслеживание задач v 1.0')
+root.title('Отслеживание задач v 1.1')
 
 apply_style()
 
