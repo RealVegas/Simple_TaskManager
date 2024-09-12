@@ -20,6 +20,7 @@ class RoundedWindow(QMainWindow):
                             border-radius: 6px;
                             background-color: #f0f0f0;
                             padding: 0px;
+                            font-size: 15px;
                         }
                         QPushButton:pressed {
                             background-color: #dcdcdc;
@@ -35,6 +36,7 @@ class RoundedWindow(QMainWindow):
                                     border-radius: 6px;
                                     background-color: #f0f0f0;
                                     padding: 0px;
+                                    font-size: 15px;
                                 }
                                 QPushButton:pressed {
                                     background-color: #dcdcdc;
