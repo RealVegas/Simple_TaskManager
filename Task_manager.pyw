@@ -2,6 +2,44 @@ import tkinter as tk
 from tkinter import ttk
 
 
+def on_drag_start(event):
+    widget = event.widget
+    widget.start_index = widget.nearest(event.y)
+    widget.drag_data = widget.get(widget.start_index)
+
+    # Создаем временную метку для визуализации перемещения
+    # widget.drag_label = tk.Label(root, text=widget.drag_data, bg="lightgrey")
+    widget.drag_label = tk.Label(frame, text=widget.drag_data, font=('Arial', 12, 'bold'), bg='light green')
+    widget.drag_label.place(x=event.x_root - root.winfo_rootx(), y=event.y_root - root.winfo_rooty())
+
+
+def on_drag_motion(event):
+    widget = event.widget
+    if hasattr(widget, 'drag_label'):
+        widget.drag_label.place(x=event.x_root - root.winfo_rootx(), y=event.y_root - root.winfo_rooty())
+
+
+def on_drag_release(event):
+    widget = event.widget
+    widget.drag_label.destroy()
+
+    # Получаем целевой Listbox
+    target_widget = event.widget.winfo_containing(event.x_root, event.y_root)
+    # Получаем индекс целевого положения
+    target_index = widget.nearest(event.y)
+
+    if widget.start_index != target_index and target_widget == widget:
+        element = widget.get(widget.start_index)
+        widget.delete(widget.start_index)
+        widget.insert(target_index, element)
+
+    elif isinstance(target_widget, tk.Listbox) and target_widget != widget:
+        widget.delete(widget.start_index)
+
+        # Вставляем элемент в целевой Listbox
+        target_widget.insert(tk.END, widget.drag_data)
+
+
 def add_task():
     new_task: str = task_entry.get()
     if new_task:
@@ -101,6 +139,11 @@ bin_listbox: tk = tk.Listbox(frame, bg='#303535', fg='#FFFFFF', borderwidth='3',
 bin_listbox.place(x=650, y=40, width=300, height=200)
 
 task_font: tuple[str, int] = ('Arial', 11)  # через стили в settings={} не работало не смог понять почему
+
+for listbox in [active_listbox, completed_listbox, bin_listbox]:
+    listbox.bind('<Button-1>', on_drag_start)
+    listbox.bind('<B1-Motion>', on_drag_motion)
+    listbox.bind('<ButtonRelease-1>', on_drag_release)
 
 task_entry = ttk.Entry(frame, font=task_font)
 task_entry.place(x=170, y=260, width=410, height=35)
